@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin | Add Concert</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Panel</h1>
+        <nav><a href="/index.html">Back to Home</a></nav>
+    </header>
+
+    <main>
+        <h2>Add New Event</h2>
+        <form id="event-form">
+            <input type="text" placeholder="Title" name="title" required />
+            <input type="text" placeholder="Date (e.g., 2025-10-12)" name="date" required />
+            <input type="text" placeholder="Location" name="location" required />
+            <textarea name="description" placeholder="Description" required></textarea>
+            <button type="submit">Add Event</button>
+        </form>
+    </main>
+
+    <script>
+        document.getElementById('event-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const res = await fetch('/api/events', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                alert('Event added!');
+                this.reset();
+            } else {
+                alert('Error adding event.');
+            }
+        });
+    </script>
+</body>
+</html>
